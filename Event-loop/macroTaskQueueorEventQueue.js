@@ -52,8 +52,6 @@ Promise.resolve().then(() => {
 
 console.log('End');
 
-
-
 // output
 
 // Start
