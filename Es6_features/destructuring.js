@@ -28,8 +28,6 @@ console.log(`Gold: ${first}, Silver: ${second}, Bronze: ${third}`);
 // Gold: 98, Silver: 95, Bronze: 91
 
 
-
-
 // object destrecturing
 
 // Simple Destructuring
