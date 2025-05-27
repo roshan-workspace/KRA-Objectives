@@ -79,7 +79,6 @@ console.log(availableProducts);
 
 
 // reduce method
-
 let cart = [
     {productName:"Bag",Price:400},
     {productName:"Book",Price:700},
@@ -95,6 +94,28 @@ const getTotalPrice = cart.reduce((total,pro)=>{
 
 console.log(getTotalPrice)
 
+
+
+// other examples for reduce method
+let nums = [1,2,3,4,5,6,7,8,9]
+let Total = nums.reduce((acc,el,index,array)=>{
+	return acc+=el
+},0)  // here we are providing the value of accumulator else by default it will be the first el of array
+
+console.log(Total)
+
+
+
+
+// Example two for finding the frequency of any data
+const fruits = ["apple", "banana", "apple", "orange", "banana","mango"];
+
+const count = fruits.reduce((acc, fruit) => {
+  acc[fruit] = (acc[fruit] || 0) + 1
+  return acc
+}, {})
+
+console.log(count)  // { apple: 2, banana: 2, orange: 1, mango:1 }
 
 
 
