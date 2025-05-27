@@ -3,20 +3,21 @@
 
 // it gives us cleaner syntax for handling the promises
 
+function delay(ms) {
+  return new Promise(resolve => setTimeout(()=>{
+resolve()
+  },ms));
+}
 
-// function delay(ms) {
-//   return new Promise(resolve => setTimeout(()=>{
-// resolve()
-//   },ms));
-// }
 
-// async function doSomething() {
-//   console.log("Start");
-//   await delay(1000);  
-//   console.log("After 1 second");
-// }
 
-// doSomething();
+async function doSomething() {
+  console.log("Start");
+  await delay(1000);  
+  console.log("After 1 second");
+}
+
+doSomething();
 
 
 // fetching data 
@@ -57,23 +58,25 @@ async function getData(){
 getData()
 
 
+function wait(ms) {
+  return new Promise((res,rej)=>{
+    setTimeout(()=>{
+    res()
+  },ms)
+  });
+}
 
+async function runTasks() {
+  console.log("Task 1 started");
+  await wait(1000);
+  console.log("Task 1 done");
 
-// function wait(ms) {
-//   return new Promise(resolve => setTimeout(resolve, ms));
-// }
+  console.log("Task 2 started");
+  await wait(2000);
+  console.log("Task 2 done");
+}
 
-// async function runTasks() {
-//   console.log("Task 1 started");
-//   await wait(1000);
-//   console.log("Task 1 done");
-
-//   console.log("Task 2 started");
-//   await wait(2000);
-//   console.log("Task 2 done");
-// }
-
-// runTasks();
+runTasks();
 
 
 
