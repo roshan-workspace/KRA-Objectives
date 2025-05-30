@@ -67,6 +67,7 @@ export class UsersService {
             this.users.push(newUser)
             return newUser
     }
+    
 
     findAndUpdate(id:number,updateUser:UpdateUserDto){
         this.users  = this.users.map((user)=>{

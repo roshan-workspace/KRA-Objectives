@@ -1,0 +1,39 @@
+{
+  "books": [
+    {
+      "id": 2574152401524,
+      "title": "Gunahon Ka Devta",
+      "author": "Dharamvir Bharati",
+      "published": 1949,
+      "genre": "Fiction"
+    },
+    {
+      "id": 2574152401525,
+      "title": "Godaan",
+      "author": "Munshi Premchand",
+      "published": 1936,
+      "genre": "Fiction"
+    },
+    {
+      "id": 2574152401526,
+      "title": "Train to Pakistan",
+      "author": "Khushwant Singh",
+      "published": 1956,
+      "genre": "Fiction"
+    },
+    {
+      "id": 2574152401527,
+      "title": "The Discovery of India",
+      "author": "Jawaharlal Nehru",
+      "published": 1946,
+      "genre": "Non-Fiction"
+    },
+    {
+      "id": 2574152401528,
+      "title": "Wings of Fire",
+      "author": "A.P.J. Abdul Kalam",
+      "published": 1999,
+      "genre": "Non-Fiction"
+    }
+  ]
+}
