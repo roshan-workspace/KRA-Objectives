@@ -9,7 +9,7 @@ export class AppController{
     @Get()
     @UseInterceptors(AppInterceptor)
     SayHello():any{
-
+ 
         return "This is From the api!!"
     }
 }
