@@ -2,7 +2,7 @@ import { ArgumentsHost, Catch, ExceptionFilter, HttpException } from "@nestjs/co
 import { Request, Response } from "express";
 
 
-@Catch(HttpException)
+@Catch(TypeError)
 export class BookCostomeExceptionFilter implements ExceptionFilter{
     catch(exception: HttpException, host: ArgumentsHost) {
         const context = host.switchToHttp()
