@@ -15,10 +15,10 @@ export class ServiceModuleService {
   }
 
   async findAll(): Promise<Service[]> {
-    // return this.serviceRepo.find();
-     return await this.serviceRepo.find({
-    relations: ['createdByUser'],
-  });
+    return this.serviceRepo.find();
+  //    return await this.serviceRepo.find({
+  //   relations: ['createdByUser'],
+  // });
   }
 
   async findOne(id: number): Promise<Service> {

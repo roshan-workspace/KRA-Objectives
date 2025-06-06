@@ -4,9 +4,8 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { ServiceModuleService } from './service_module/service_module.service';
-import { ServiceModuleController } from './service_module/service_module.controller';
 import { ServiceModuleModule } from './service_module/service_module.module';
+import { ProviderModuleModule } from './provider_module/provider_module.module';
 
 @Module({
    imports: [
@@ -31,7 +30,7 @@ import { ServiceModuleModule } from './service_module/service_module.module';
       inject: [ConfigService],
     }),
     UserModule,
-     ServiceModuleModule,
+     ServiceModuleModule,ProviderModuleModule
   ],
   
   controllers: [AppController],
