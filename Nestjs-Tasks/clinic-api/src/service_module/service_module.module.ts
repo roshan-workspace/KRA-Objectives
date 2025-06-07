@@ -18,7 +18,7 @@ import { ServiceModuleService } from './service_module.service'
     },
     ServiceModuleService,
   ],
-  exports:[ServiceModuleService]
+  exports:[ServiceModuleService,CustomServiceRepository]
 })
 
 export class ServiceModuleModule {}

@@ -30,7 +30,7 @@ import { ProviderModuleModule } from './provider_module/provider_module.module';
       inject: [ConfigService],
     }),
     UserModule,
-     ServiceModuleModule,ProviderModuleModule
+     ProviderModuleModule,ServiceModuleModule,
   ],
   
   controllers: [AppController],

@@ -25,12 +25,16 @@ export class Provider {
   @Column({ type: 'enum', enum: Gender })
   gender: Gender;
 
-  @ManyToMany(() => Service, { eager: true }) 
-  @JoinTable({
-    name: 'provider_services',
-    joinColumn: { name: 'providerId', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'serviceId', referencedColumnName: 'id' },
-  })
+  // @ManyToMany(() => Service, { eager: true }) 
+  // @JoinTable({
+  //   name: 'provider_services',
+  //   joinColumn: { name: 'providerId', referencedColumnName: 'id' },
+  //   inverseJoinColumn: { name: 'serviceId', referencedColumnName: 'id' },
+  // })
+  // services: Service[];
+
+  @ManyToMany(() => Service)
+  @JoinTable() 
   services: Service[];
 
   @Column({ default: true })

@@ -21,13 +21,14 @@ import { UpdateProviderDto } from './DTO/update-provider.dto';
 export class ProviderModuleController {
   constructor(private readonly providerModuleService: ProviderModuleService) {}
 
+
   @Post()
   async create(@Body(ValidationPipe) createDto: CreateProviderDto) {
     const result = await this.providerModuleService.create(createDto);
     return {
       statusCode: HttpStatus.CREATED,
       error: [],
-      data: [],
+      data: result
     };
   }
 
@@ -41,15 +42,7 @@ export class ProviderModuleController {
     };
   }
 
-  @Get()
-  async findAll() {
-    const result = await this.providerModuleService.findAll();
-    return {
-      statusCode: HttpStatus.OK,
-      error: [],
-      data: result,
-    };
-  }
+ 
 
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: number) {
@@ -94,13 +87,26 @@ export class ProviderModuleController {
 
   @Get('search/by')
   async search(
-    @Query('fistName') firstName?: string,
+    @Query('firstName') firstName?: string,
     @Query('lastName') lastName?: string,
   ) {
     const result = await this.providerModuleService.searchByfirstNameOrlastName(
       firstName,
       lastName,
     );
+    console.log('firstName: ', firstName);
+    console.log('lastName: ', lastName);
+
+    return {
+      statusCode: HttpStatus.OK,
+      error: [],
+      data: result,
+    };
+  }
+
+   @Get()
+  async findAll() {
+    const result = await this.providerModuleService.findAll();
     return {
       statusCode: HttpStatus.OK,
       error: [],
