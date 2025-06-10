@@ -1,11 +1,13 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Gender } from '../constants/gender.enum';
 import { Service } from 'src/service_module/entities/service.entity';
@@ -25,16 +27,8 @@ export class Provider {
   @Column({ type: 'enum', enum: Gender })
   gender: Gender;
 
-  // @ManyToMany(() => Service, { eager: true }) 
-  // @JoinTable({
-  //   name: 'provider_services',
-  //   joinColumn: { name: 'providerId', referencedColumnName: 'id' },
-  //   inverseJoinColumn: { name: 'serviceId', referencedColumnName: 'id' },
-  // })
-  // services: Service[];
-
   @ManyToMany(() => Service)
-  @JoinTable() 
+  @JoinTable({ name: 'provider_services' })
   services: Service[];
 
   @Column({ default: true })
@@ -46,4 +40,10 @@ export class Provider {
   @ManyToOne(() => User)
   @JoinColumn({ name: 'createdBy' })
   createdByUser: User;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

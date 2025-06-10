@@ -19,69 +19,142 @@ export class ProviderModuleService {
     private readonly providerRepo: CustomProviderRepository,
   ) {}
 
-  async create(createProviderDto: CreateProviderDto): Promise<any> {
-    const { services: serviceIds, ...rest } = createProviderDto;
-    const serviceEntities = await this.serviceRepo.findBy({
-      id: In(serviceIds),
+  async create(dto: CreateProviderDto): Promise<any> {
+    const services = await this.serviceRepo.findBy({
+      id: In(dto.services),
     });
 
-    if (serviceEntities.length !== serviceIds.length) {
+    if (services.length !== dto.services.length) {
       throw new BadRequestException('Some service IDs are invalid');
     }
 
     const provider = this.providerRepo.create({
-      ...rest,
-      services: serviceEntities,
+      ...dto,
+      services,
     });
     const saved = await this.providerRepo.save(provider);
 
-    const serviceList = serviceEntities.map((s)=>s.name)
-    console.log('serviceList: ', serviceList);
+    const populated = await this.providerRepo.findOne({
+      where: { id: saved.id },
+      relations: ['createdByUser', 'services'],
+    });
 
+    if (!populated) {
+      throw new NotFoundException(`Provider not found after creation`);
+    }
     return {
-      ...saved,
-      services: serviceList
+      id: populated.id,
+      firstName: populated.firstName,
+      lastName: populated.lastName,
+      gender: populated.gender,
+      isActive: populated.isActive,
+      createdBy: populated.createdByUser?.firstName || 'Unknown',
+      services: populated.services.map((s) => s.name),
     };
   }
 
-  // async findAll(): Promise<Provider[]> {
-  //   // return this.serviceRepo.find();
-  //   return  this.providerRepo.find();
-  // }
+  //  async update(id: number, dto: UpdateServiceDto): Promise<Service> {
+  //     const service = await this.findOne(id);
+  //     Object.assign(service, dto);
+  //     return this.serviceRepo.save(service);
+  //   }
 
-
-async findAll(): Promise<ProviderResponseDto[]> {
-  const providers = await this.providerRepo.find({ relations: ['services'] });
-
-  return plainToInstance(ProviderResponseDto, providers, {
-    excludeExtraneousValues: true,
-  });
-}
-
-
-  async findOne(id: number): Promise<Provider> {
+  async update(id: number, dto: UpdateProviderDto): Promise<any> {
     const provider = await this.providerRepo.findOne({ where: { id } });
+    if (!provider) {
+      throw new NotFoundException(`Provider with ID ${id} not found`);
+    }
+    Object.assign(provider, dto);
+    await this.providerRepo.save(provider);
+
+    const populated = await this.providerRepo.findOne({
+    where: { id },
+    relations: ['createdByUser', 'services'],
+  });
+
+  if (!populated) {
+    throw new NotFoundException('Provider not found after update.');
+  }
+
+  // Step 6: Return formatted response
+  return {
+    id: populated.id,
+    firstName: populated.firstName,
+    lastName: populated.lastName,
+    gender: populated.gender,
+    isActive: populated.isActive,
+    createdBy: populated.createdByUser?.firstName ?? 'Unknown',
+    services: populated.services.map((s) => s.name),
+  };
+
+
+  }
+
+  async findAll(): Promise<ProviderResponseDto[]> {
+    const providers = await this.providerRepo.find({ relations: ['services'] });
+
+    return plainToInstance(ProviderResponseDto, providers, {
+      excludeExtraneousValues: true,
+    });
+  }
+
+  async findById(id: number): Promise<ProviderResponseDto> {
+    const provider = await this.providerRepo.findOne({
+      where: { id },
+      relations: ['services'],
+    });
     if (!provider) {
       throw new NotFoundException(`Service with ID ${id} not found`);
     }
-    return provider;
+
+    // return provider;
+    return plainToInstance(ProviderResponseDto, provider, {
+      excludeExtraneousValues: true,
+    });
   }
 
-  async update(id: number, dto: UpdateProviderDto): Promise<Provider> {
-    const provider = await this.findOne(id);
-    Object.assign(provider, dto);
-    return this.providerRepo.save(provider);
-  }
-
-  async updateStatus(id: number, isActive: boolean): Promise<Provider> {
-    const provider = await this.findOne(id);
+  async updateStatus(id: number, isActive: boolean): Promise<any> {
+    console.log('isActive: ', isActive);
+    if (typeof isActive !== 'boolean') {
+      throw new BadRequestException(`'isActive' must be a boolean value`);
+    }
+    const provider = await this.providerRepo.findOne({ where: { id } });
+    if (!provider) {
+      throw new NotFoundException(`Provider with ID ${id} not found`);
+    }
     provider.isActive = isActive;
-    return this.providerRepo.save(provider);
+    console.log('provider: ', provider);
+    await this.providerRepo.save(provider);
+
+    const updated = await this.providerRepo.findOne({
+      where: { id },
+      relations: ['createdByUser', 'services'],
+    });
+
+    // Format for response (DTO-like)
+
+    if (!updated) {
+      throw new NotFoundException(`Provider not found after status change`);
+    }
+    return {
+      id: updated.id,
+      firstName: updated.firstName,
+      lastName: updated.lastName,
+      gender: updated.gender,
+      isActive: updated.isActive,
+      createdBy: updated.createdByUser?.firstName || 'Unknown',
+      services: updated.services.map((s) => s.name),
+    };
   }
 
-  async remove(id: number): Promise<void> {
-    const provider = await this.findOne(id);
+  async remove(id: number): Promise<Provider> {
+    const provider = await this.providerRepo.findOne({ where: { id } });
+    if (!provider) {
+      throw new NotFoundException(`Provider with ID ${id} not found`);
+    }
+
     await this.providerRepo.remove(provider);
+    return provider;
   }
 
   async searchByfirstNameOrlastName(
@@ -93,13 +166,16 @@ async findAll(): Promise<ProviderResponseDto[]> {
       where.firstName = ILike(`%${firstName}%`);
     }
     if (lastName) {
-      where.lastName = lastName;
+      where.lastName =  ILike(`%${lastName}`);
     }
-    const provider = await this.providerRepo.find({ where, relations: ['services']  });
+    const provider = await this.providerRepo.find({
+      where,
+      relations: ['services'],
+    });
 
-     return plainToInstance(ProviderResponseDto, provider, {
-    excludeExtraneousValues: true,
-  });
+    return plainToInstance(ProviderResponseDto, provider, {
+      excludeExtraneousValues: true,
+    });
   }
 
   async isActive(active: boolean): Promise<Provider[]> {

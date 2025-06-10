@@ -11,25 +11,34 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
 import { ServiceModuleService } from './service_module.service';
 import { CreateServiceDto } from './DTO/create-service.dto';
 import { UpdateServiceDto } from './DTO/update-service.dto';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/role.guard';
+import { Roles } from 'src/auth/roles.decorator';
 
+@UseGuards(JwtAuthGuard)
 @Controller('service')
 export class ServiceModuleController {
   constructor(private readonly serviceModuleService: ServiceModuleService) {}
 
   @Post()
+  @UseGuards(RolesGuard)
+  @Roles("admin")
   async create(@Body(ValidationPipe) createDto: CreateServiceDto) {
     const result = await this.serviceModuleService.create(createDto);
+    console.log('result: ', result);
     return {
       statusCode: HttpStatus.CREATED,
       error: [],
       data: result,
     };
   }
+
 
    @Get("/isActive")
   async isActive(@Query('active', ParseBoolPipe) active: boolean) {

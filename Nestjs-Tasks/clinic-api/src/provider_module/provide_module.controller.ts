@@ -46,10 +46,15 @@ export class ProviderModuleController {
 
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: number) {
-    const result = await this.providerModuleService.findOne(id);
+    const result = await this.providerModuleService.findById(id);
+     return {
+      statusCode: HttpStatus.OK,
+      error: [],
+      data: result,
+    };
   }
 
-  @Put(':id')
+  @Patch(':id')
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body(ValidationPipe) updateDto: UpdateProviderDto,
@@ -77,11 +82,11 @@ export class ProviderModuleController {
 
   @Delete(':id')
   async remove(@Param('id', ParseIntPipe) id: number) {
-    await this.providerModuleService.remove(id);
+    const deletedProvider =  await this.providerModuleService.remove(id);
     return {
       statusCode: HttpStatus.OK,
       error: [],
-      data: null,
+      data: {deletedProvider,message:"This provider has been deleted successfully"},
     };
   }
 
@@ -107,6 +112,7 @@ export class ProviderModuleController {
    @Get()
   async findAll() {
     const result = await this.providerModuleService.findAll();
+    console.log("Hello ji");
     return {
       statusCode: HttpStatus.OK,
       error: [],
