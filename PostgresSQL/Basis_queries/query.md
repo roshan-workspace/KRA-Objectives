@@ -147,6 +147,7 @@ select max(salary) from employee;
 ```
 
 
+ 
 
 --- GROUP BY
 Is used for grouping the data with some comman ground;
@@ -155,8 +156,94 @@ Is used for grouping the data with some comman ground;
 select dept , count(emp_id) from employee group by dept;
 
 select dept , count(emp_id), sum(salary) from employee group by dept;
-
-
 ```
 
+
+--- STRING FUNCTIONS
+
+- concat
+```
+select concat(fname,' ',lname) As FullName from employee;
+select concat_ws('-',fname,lname) as fullname from employee;
+```
+
+
+- substr
+```
+ select substr('Hello, this is good', 1,6);
+ ```
+
+
+ - reverse
+ ```
+ select reverse(fname) from employee;
+ ```
+
+- upper
+ ```
+ select upper(fname) from employee;
+ ```
+
+ -lower
+ ```
+ select lower(lname) from employee;
+ ```
+
+
+
+
+-------------------------------------
+For making change in the structure of any table
+
+
+- adding any new column;
+alter table person
+add column age int;
+
+- adding any new column with default value in it;
+```
+alter table person
+add column age int default 1;
+```
+
+
+- droping any column;
+```
+alter table person
+drop column age;
+```
+
+
+-  Updating table name
+```
+alter table person
+rename column name to fname
+```
+
+
+- renaming the name of table
+```
+alter table person
+rename to user
+```
+
+
+
+---------------
+--- CASE Constraints
+
+for creaing a salary category
+```
+ select fname, salary , case when salary >=50000 then 'HIGH' When salary between 35000 and 50000 then 'MID' else 'LOW' end as sal_cat from employees;
+```
+
+for getting 10% bonus
+```
+select fname, salary , case when salary > 10000 then round(salary*0.10) end as bonus from employees;
+```
+
+grouping by salary category
+```
+select  case when salary >=50000 then 'HIGH' When salary between 35000 and 50000 then 'MID' else 'LOW' end as sal_cat, count(emp_id) from employees  group by sal_cat;
+```
 
