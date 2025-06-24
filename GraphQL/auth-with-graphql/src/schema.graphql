@@ -1,0 +1,30 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input AddUserArgs {
+  email: String!
+  firstName: String!
+  lastName: String!
+  password: String!
+  role: String!
+}
+
+type Mutation {
+  addUser(adduserArgs: AddUserArgs!): User!
+}
+
+type Query {
+  index: String!
+  login(email: String!, password: String!): String!
+  securedResourceForAdmin: String!
+  securedResourceForUsers: String!
+}
+
+type User {
+  email: String!
+  firstName: String!
+  id: Int!
+  lastName: String!
+  role: String!
+}

@@ -12,13 +12,12 @@ export class BookService {
   ) {}
 
   async findAllBooks(): Promise<Book[]> {
-    const books = await this.bookRepo.find();
-    return books;
+   return await this.bookRepo.find();
   }
 
 
   async findbyId(id: number): Promise<Book | null> {
-    const book = await this.bookRepo.findOne({ where: { id: id } });
+    const book = await this.bookRepo.findOneBy( {id });
     return book;
   }
 
@@ -33,9 +32,7 @@ export class BookService {
     const book: Book = new Book();
     book.title = addBookArgs.title;
     book.price = addBookArgs.price;
-
-    const newBook = await this.bookRepo.save(book);
-    return newBook;
+    return await this.bookRepo.save(book);
   }
 
   async updateBook(updateBookArgs: UpdateBookArgs): Promise<string> {

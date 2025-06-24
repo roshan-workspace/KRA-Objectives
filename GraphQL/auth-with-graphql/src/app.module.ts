@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver } from '@nestjs/apollo';
 import { join } from 'path';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppResolver } from './app.resolver';
-import { BookModule } from './book/book.module';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [GraphQLModule.forRoot({
+  imports: [UserModule, AuthModule,GraphQLModule.forRoot({
     driver:ApolloDriver,
     playground:true,
     autoSchemaFile:join(process.cwd(), "src/schema.graphql"),
@@ -17,7 +17,8 @@ import { BookModule } from './book/book.module';
       path:join(process.cwd(), "src/graphql.ts")
     }
   }),
-TypeOrmModule.forRoot({
+
+ TypeOrmModule.forRoot({
   type:"postgres",
   host:"localhost",
   port:5432,
@@ -25,10 +26,8 @@ TypeOrmModule.forRoot({
   password:"12345",
   database:"BookDB", 
   entities:[__dirname+'/**/*.entity{.ts,.js}'],
-  synchronize:true
-}),
-BookModule
-
+  synchronize:true,
+})
 ],
   controllers: [],
   providers: [AppResolver],
