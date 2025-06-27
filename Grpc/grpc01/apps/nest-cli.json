@@ -1,0 +1,16 @@
+{
+  "projects": {
+    "generated": {
+      "type": "library",
+      "root": "libs/generated",
+      "entryFile": "index",
+      "sourceRoot": "libs/generated/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/generated/tsconfig.lib.json"
+      }
+    }
+  },
+  "compilerOptions": {
+    "webpack": true
+  }
+}
