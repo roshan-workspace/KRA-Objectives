@@ -10,7 +10,7 @@ constructor(private eventEmitter: EventEmitter2) {}
         const title = "How to get Rich within a month";
         console.log('Publishing a new Video');
 
-        const result = await this.eventEmitter.emitAsync('video.created', {title})
+        const result = this.eventEmitter.emitAsync('video.created', {title})
 
         return {message:'All Done', result};
     }

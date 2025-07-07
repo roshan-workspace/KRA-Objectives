@@ -6,6 +6,8 @@ import { VideoService } from './video.service';
 export class AppController {
   constructor(private readonly videoService: VideoService) {}
 
+  
+
 @Post('video')
 createVideo(){
   return this.videoService.publish()
