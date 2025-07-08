@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { JobModule } from './job/job.module';
-import { UsersModule } from './users/users.module';
-import { CacheStoreModule } from './cache-store/cache-store.module';
-import { DynamicModule } from '@nestjs/common';
+import { PaymentModule } from './payment/payment.module';
+import { ConfigModule } from '@nestjs/config';
+
 @Module({
-  imports: [JobModule, UsersModule, CacheStoreModule],
+  imports: [ConfigModule.forRoot()
+    // ,PaymentModule.register('stripe')],
+    ,PaymentModule.register(process.env.PAYMENT_PROVIDER as 'stripe' | 'phonepay')],
   controllers: [AppController],
   providers: [AppService],
 })
